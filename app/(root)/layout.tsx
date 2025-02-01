@@ -1,12 +1,14 @@
 import React from 'react'
 import Navbar from '@/app/components/Navbar/Navbar'
-import Footer from '@/app/components/Footer/Footer'
+import Footer from '@/app/components/Footer'
 
 const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <main>
+    <main className="min-h-screen flex flex-col">
       <Navbar />
-      {children}
+      <div className="flex-grow">
+        {children}
+      </div>
       <Footer />
     </main>
   )
