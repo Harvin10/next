@@ -1,9 +1,10 @@
 'use client';
 
+import React from 'react';
 import type { FC } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Button from '@/app/components/Button';
+import Button from '../components/Button';
 
 const HERO_IMAGE = {
   url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",

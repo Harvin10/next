@@ -1,6 +1,6 @@
 import React from 'react'
-import Navbar from '@/app/components/Navbar/Navbar'
-import Footer from '@/app/components/Footer'
+import Navbar from '../components/Navbar/Navbar'
+import Footer from '../components/Footer'
 
 const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
