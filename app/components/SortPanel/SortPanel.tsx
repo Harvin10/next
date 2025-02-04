@@ -1,7 +1,8 @@
-import React from 'react';
-import Button from '../Button';
+'use client';
 
-type SortOption = 'price-asc' | 'price-desc' | 'location';
+import React from 'react';
+import Button from '../Button/Button';
+import { SortOption } from '../../lib/types';
 
 interface SortPanelProps {
   isOpen: boolean;
@@ -33,7 +34,7 @@ const SortPanel: React.FC<SortPanelProps> = ({
           </Button>
         </div>
         <div className="space-y-2">
-          {['price-asc', 'price-desc', 'location'].map((option) => (
+          {['price-asc', 'price-desc'].map((option) => (  // removed 'location'
             <button
               key={option}
               onClick={() => {
@@ -41,14 +42,11 @@ const SortPanel: React.FC<SortPanelProps> = ({
                 onClose();
               }}
               className={`w-full text-left px-4 py-3 rounded-md transition-colors ${
-                sortBy === option 
-                  ? 'bg-[#b22222] text-white' 
-                  : 'hover:bg-gray-100'
+                sortBy === option ? 'bg-[#b22222] text-white' : 'hover:bg-gray-100'
               }`}
             >
               {option === 'price-asc' && 'Price: Low to High'}
               {option === 'price-desc' && 'Price: High to Low'}
-              {option === 'location' && 'Location'}
             </button>
           ))}
         </div>

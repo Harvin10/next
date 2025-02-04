@@ -19,3 +19,17 @@ body {
   background: var(--background);
   font-family: "Roboto Mono", serif;
 }
+
+/* Add these rules at the end of the file */
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+}
+
+/* Force light mode styles */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: light;
+  }
+}

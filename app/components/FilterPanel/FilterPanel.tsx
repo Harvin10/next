@@ -1,24 +1,27 @@
+'use client';
+
 import React from 'react';
-import Button from '../Button';
+import Button from '../Button/Button';
+import { PROPERTY_TYPES } from '../../lib/constants';
 
 interface FilterPanelProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedLocation: string;
-  locations: string[];
+  selectedPropertyType: string;
   priceRange: { min: string; max: string };
-  onLocationChange: (location: string) => void;
+  onPropertyTypeChange: (type: string) => void;
   onPriceRangeChange: (range: { min: string; max: string }) => void;
+  onApply: () => void;  // Add this prop
 }
 
 const FilterPanel: React.FC<FilterPanelProps> = ({
   isOpen,
   onClose,
-  selectedLocation,
-  locations,
+  selectedPropertyType,
   priceRange,
-  onLocationChange,
+  onPropertyTypeChange,
   onPriceRangeChange,
+  onApply,  // Add this prop
 }) => {
   if (!isOpen) return null;
 
@@ -41,15 +44,17 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
         <div className="p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Property Type</label>
             <select
-              value={selectedLocation}
-              onChange={(e) => onLocationChange(e.target.value)}
+              value={selectedPropertyType}
+              onChange={(e) => onPropertyTypeChange(e.target.value)}
               className="w-full p-2 border rounded-md"
             >
-              <option value="">All Locations</option>
-              {locations.map(location => (
-                <option key={location} value={location}>{location}</option>
+              <option value="">All Types</option>
+              {PROPERTY_TYPES.map(type => (
+                <option key={type} value={type}>
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </option>
               ))}
             </select>
           </div>
@@ -78,7 +83,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
         <div className="sticky bottom-0 bg-white p-6 border-t">
           <Button
-            onClick={onClose}
+            onClick={() => {
+              onApply();
+              onClose();
+            }}
             variant="primary"
             size="lg"
             className="w-full"

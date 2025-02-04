@@ -1,30 +1,15 @@
-'use client';
-
-import React from 'react';
-import type { FC } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import Button from '../components/Button';
+import Link from "next/link";
+import Button from '../components/Button/Button';
 
-const HERO_IMAGE = {
-  url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
-  alt: "Modern Property Building",
-};
-
-const Home: FC = () => {
-  const router = useRouter();
-
-  const handleFindNowClick = (): void => {
-    router.push('/products');
-  };
-
+const Home = () => {
   return (
     <div className="relative h-screen w-full">
       <div className="absolute inset-0 bg-black/40 z-[1]" />
 
       <Image
-        src={HERO_IMAGE.url}
-        alt={HERO_IMAGE.alt}
+        src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab"
+        alt="Modern Property Building"
         fill
         className="object-cover"
         priority
@@ -36,33 +21,34 @@ const Home: FC = () => {
             Find Your Dream Property Today
           </h1>
 
-            <p className="text-xl text-white leading-relaxed [text-shadow:_0_1px_2px_rgb(0_0_0_/_40%)]">
+          <p className="text-xl text-white leading-relaxed [text-shadow:_0_1px_2px_rgb(0_0_0_/_40%)]">
             Discover thousands of carefully curated properties that match your
             lifestyle and budget at <span className="font-bold">JagoRumah</span>. Our expert team is here to guide you through
             every step of your journey.
-            </p>
+          </p>
 
           <div className="pt-4">
-            <Button 
-              onClick={handleFindNowClick} 
-              variant="primary" 
-              size="lg"
-              icon={
-                <Image
-                  src="/images/arrow-right.png"
-                  alt="Arrow"
-                  width={20}
-                  height={20}
-                />
-              }
-            >
-              Find Now
-            </Button>
+            <Link href="/products">
+              <Button
+                variant="primary"
+                size="lg"
+                icon={
+                  <Image
+                    src="/images/arrow-right.png"
+                    alt="Arrow right icon"
+                    width={20}
+                    height={20}
+                  />
+                }
+              >
+                Find Now
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default Home;
