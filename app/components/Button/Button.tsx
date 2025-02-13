@@ -22,7 +22,7 @@ const Button: FC<ButtonProps> = ({
   const baseStyles = 'rounded-full font-semibold transition-colors duration-300 flex items-center gap-4 shadow-lg hover:shadow-xl';
 
   const variants = {
-    primary: 'bg-[#b22222] text-white hover:bg-[#9b1d1d]',
+    primary: 'bg-[#b22222] hover:bg-[#8b1a1a] text-white',
     secondary: 'bg-gray-600 text-white hover:bg-gray-700',
     outline: 'bg-transparent border-2 border-[#b22222] text-[#b22222] hover:bg-[#b22222] hover:text-white',
   };

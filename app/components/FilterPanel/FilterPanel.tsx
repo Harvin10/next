@@ -11,7 +11,7 @@ interface FilterPanelProps {
   priceRange: { min: string; max: string };
   onPropertyTypeChange: (type: string) => void;
   onPriceRangeChange: (range: { min: string; max: string }) => void;
-  onApply: () => void;  // Add this prop
+  onApply: () => void;
 }
 
 const FilterPanel: React.FC<FilterPanelProps> = ({
@@ -21,7 +21,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   priceRange,
   onPropertyTypeChange,
   onPriceRangeChange,
-  onApply,  // Add this prop
+  onApply,
 }) => {
   if (!isOpen) return null;
 

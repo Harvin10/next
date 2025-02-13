@@ -49,7 +49,7 @@ const ProductDetailCard: React.FC<ProductDetailCardProps> = ({ id, image, price,
         <div className="px-3 sm:px-4 md:px-6 pb-3 sm:pb-4">
           <div 
             onClick={handleWhatsAppClick}
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-medium 
+            className="w-full bg-green-500 text-white font-medium 
               py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg flex items-center justify-center gap-1.5 sm:gap-2 
               transition-all duration-300 text-sm sm:text-base cursor-pointer"
           >

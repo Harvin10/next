@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Product, SortOption } from '../../lib/types';
 import ProductHeader from '../../components/ProductHeader/ProductHeader';
 import ProductGrid from '../../components/ProductGrid/ProductGrid';
@@ -11,98 +11,74 @@ import FilterPanel from '../../components/FilterPanel/FilterPanel';
 const ProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-  const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
+
+  const [currentSearchQuery, setCurrentSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'' | SortOption>('');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [selectedPropertyType, setSelectedPropertyType] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // Use ref to track if the component is mounted
-  const isMounted = useRef(true);
-
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = async (searchQuery?: string, sortQuery?: SortOption) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
-        q: searchTerm,
-        ...(selectedPropertyType && { propertyType: selectedPropertyType }),
-        ...(priceRange.min && { minPrice: priceRange.min }),
-        ...(priceRange.max && { maxPrice: priceRange.max }),
-        ...(sortBy && { sortBy }),
-        page: currentPage.toString(),
+        q: searchQuery || currentSearchQuery,
+        propertyType: selectedPropertyType,
+        minPrice: priceRange.min,
+        maxPrice: priceRange.max,
+        sortBy: sortQuery || sortBy,
+        page: `${currentPage}`,
         limit: '12',
       });
 
       const response = await fetch(`/api/products?${params}`);
       const data = await response.json();
       
-      if (isMounted.current) {
-        setProducts(data.products);
-        setTotalPages(data.totalPages);
-      }
+      setProducts(data.products);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
-      if (isMounted.current) {
-        setLoading(false);
-      }
+      setLoading(false);
     }
-  }, [searchTerm, selectedPropertyType, priceRange.min, priceRange.max, sortBy, currentPage]);
+  }
 
-  // Handle search and sort changes
-  useEffect(() => {
-    setCurrentPage(1);
-    fetchProducts();
-  }, [searchTerm, sortBy]);
-
-  // Handle pagination changes
   useEffect(() => {
     fetchProducts();
   }, [currentPage]);
 
-  const handleFilterApply = useCallback(() => {
-    setCurrentPage(1);
-    fetchProducts();
-  }, [fetchProducts]);
+  const handleSortApply = async (sortBy) => {
+    await setCurrentPage(1);
+    await setSortBy(sortBy);
+    fetchProducts('', sortBy);
+  }
 
-  // Initial fetch
-  useEffect(() => {
+  const handleFilterApply = async () => {
+    await setCurrentPage(1);
     fetchProducts();
-  }, []);
+  };
 
-  return (
+  const handleSearch = async (query?: string) => {
+    await setCurrentPage(1);
+    await setCurrentSearchQuery(query);
+    fetchProducts(query);
+  };
+
+  const handlePageChange = async (page) => {
+    await setCurrentPage(page);
+    fetchProducts();
+  }
+
+  return <>
     <div className="products-page container mx-auto px-4 py-4 sm:py-8">
       <ProductHeader 
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
+        onSearchSubmit={handleSearch}
         onSortClick={() => setIsSortOpen(true)}
         onFilterClick={() => setIsFilterOpen(true)}
-      />
-
-      <SortPanel
-        isOpen={isSortOpen}
-        onClose={() => setIsSortOpen(false)}
-        sortBy={sortBy}
-        onSortChange={setSortBy}
-      />
-
-      <FilterPanel
-        isOpen={isFilterOpen}
-        onClose={() => setIsFilterOpen(false)}
-        selectedPropertyType={selectedPropertyType}
-        priceRange={priceRange}
-        onPropertyTypeChange={setSelectedPropertyType}
-        onPriceRangeChange={setPriceRange}
-        onApply={handleFilterApply}
       />
 
       <ProductGrid 
@@ -113,10 +89,28 @@ const ProductsPage = () => {
       <Pagination 
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={setCurrentPage}
+        onPageChange={handlePageChange}
       />
     </div>
-  );
+
+
+    <SortPanel
+      isOpen={isSortOpen}
+      onClose={() => setIsSortOpen(false)}
+      sortBy={sortBy}
+      onSortChange={handleSortApply}
+    />
+
+    <FilterPanel
+      isOpen={isFilterOpen}
+      onClose={() => setIsFilterOpen(false)}
+      selectedPropertyType={selectedPropertyType}
+      priceRange={priceRange}
+      onPropertyTypeChange={setSelectedPropertyType}
+      onPriceRangeChange={setPriceRange}
+      onApply={handleFilterApply}
+    />
+  </>;
 };
 
 export default ProductsPage;
