@@ -4,12 +4,29 @@ export interface Product {
   price: string;
   description: string;
   location: string;
+  propertyType: 'house' | 'apartment' | 'villa' | 'condo' | 'penthouse' | 'townhouse';
   whatsappLink: string;
-  propertyType: string;
-  bedrooms?: number;
-  bathrooms?: number;
-  squareFootage?: number;
-  amenities?: string[];
+  bedrooms: number;
+  bathrooms: number;
+  squareFootage: number;
+  yearBuilt: number;
+  createdAt: Date;
 }
 
-export type SortOption = 'price' | '-price' | 'description' | '-description' | '';
+export interface DataService {
+  getProducts(): Promise<Product[]>;
+  getLocations(query: string): Promise<string[]>;
+}
+
+export type SortOption = {
+  sortOptionPrice: SortOptionPrice;
+  sortOptionDate: SortOptionDate;
+}
+
+export type SortOptionPrice =
+  | 'price-asc'
+  | 'price-desc';
+
+export type SortOptionDate =
+  | 'newest'
+  | 'oldest';

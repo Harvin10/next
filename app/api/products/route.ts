@@ -7,7 +7,8 @@ interface ProductQuery {
   propertyType?: string;
   minPrice?: string;
   maxPrice?: string;
-  sortBy?: string;
+  sortByPrice?: string;
+  sortByDate?: string;
   page?: string;
   limit?: string;
 }
@@ -19,7 +20,8 @@ export async function GET(request: NextRequest) {
     propertyType: nextUrl.searchParams.get('propertyType') || '',
     minPrice: nextUrl.searchParams.get('minPrice') || '',
     maxPrice: nextUrl.searchParams.get('maxPrice') || '',
-    sortBy: nextUrl.searchParams.get('sortBy') || '',
+    sortByPrice: nextUrl.searchParams.get('sortByPrice') || '',
+    sortByDate: nextUrl.searchParams.get('sortByDate') || '',
     page: nextUrl.searchParams.get('page') || '1',
     limit: nextUrl.searchParams.get('limit') || '12',
   };
@@ -31,7 +33,8 @@ export async function GET(request: NextRequest) {
     propertyType: queryParams.propertyType || '',
     minPrice: queryParams.minPrice || '',
     maxPrice: queryParams.maxPrice || '',
-    sortBy: queryParams.sortBy || '',
+    sortByPrice: queryParams.sortByPrice || '',
+    sortByDate: queryParams.sortByDate || '',
     page: parseInt(queryParams.page || '1', 10),
     limit: parseInt(queryParams.limit || '12', 10),
   };

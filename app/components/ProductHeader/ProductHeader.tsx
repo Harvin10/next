@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import SearchBar from '../SearchBar/SearchBar';
-import Button from '../Button/Button';
+import SearchBar from '../common/SearchBar/SearchBar';
+import Button from '../common/Button/Button';
 import { FilterIcon, SortIcon } from '../../../public/images';
 
 interface ProductHeaderProps {
@@ -21,17 +21,17 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
       onSubmit={onSearchSubmit}
       placeholder="Search by location..."
     />
-    
+
     <div className="flex justify-end gap-2">
-      <Button 
-        variant="outline" 
+      <Button
+        variant="outline"
         onClick={onSortClick}
         icon={<SortIcon />}
       >
         Sort
       </Button>
-      <Button 
-        variant="outline" 
+      <Button
+        variant="outline"
         onClick={onFilterClick}
         icon={<FilterIcon />}
       >

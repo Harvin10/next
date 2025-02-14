@@ -1,76 +1,71 @@
 'use client';
 
-import React from 'react';
-import Button from '../Button/Button';
-import { SortOption } from '../../lib/types';
+import React, { useState, useEffect } from 'react';
+import Popup from '../common/Popup/Popup';
+import Button from '../common/Button/Button';
+import { SortOption } from '@/lib/types';
 
 interface SortPanelProps {
   isOpen: boolean;
   onClose: () => void;
   sortBy: SortOption;
-  onSortChange: (sortBy: SortOption) => void;
+  onApply: (sortBy: SortOption) => void;
 }
 
 const SortPanel: React.FC<SortPanelProps> = ({
   isOpen,
   onClose,
   sortBy,
-  onSortChange,
+  onApply,
 }) => {
-  if (!isOpen) return null;
+  const [selectedSortBy, setSelectedSortBy] = useState<SortOption>(sortBy);
 
-  const sortOptions = [
-    { label: 'Price: Low to High', value: 'price' },
-    { label: 'Price: High to Low', value: '-price' },
-    { label: 'Name: A to Z', value: 'description' },
-    { label: 'Name: Z to A', value: '-description' },
-  ];
+  useEffect(() => {
+    setSelectedSortBy(sortBy);
+  }, [sortBy]);
+
+  const handleApply = () => {
+    onApply(selectedSortBy);
+    onClose();
+  };
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedSortBy({ ...selectedSortBy, sortOptionPrice: e.target.value as SortOption['sortOptionPrice'] })
+  }
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedSortBy({ ...selectedSortBy, sortOptionDate: e.target.value as SortOption['sortOptionDate'] })
+  }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-[70] flex justify-end">
-      <div className="bg-white w-full max-w-md h-full overflow-y-auto">
-        <div className="sticky top-0 bg-white p-6 border-b">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Sort By</h2>
-            <Button
-              onClick={onClose}
-              variant="outline"
-              size="sm"
-              className="!p-2"
-            >
-              ✕
-            </Button>
-          </div>
+    <Popup isOpen={isOpen} onClose={onClose} title="Sort By">
+      <div className="p-6 space-y-4">
+        <div>
+          <p>Price</p>
+          <input type="radio" id="price-asc" name="price" value="price-asc" checked={selectedSortBy.sortOptionPrice === 'price-asc'} onChange={handlePriceChange} />
+          <label htmlFor="price-asc">Price Asc</label>
+          <input type="radio" id="price-desc" name="price" value="price-desc" checked={selectedSortBy.sortOptionPrice === 'price-desc'} onChange={handlePriceChange} />
+          <label htmlFor="price-desc">Price Desc</label>
         </div>
-
-        <div className="p-6 space-y-4">
-          {sortOptions.map((option) => (
-            <label key={option.value} className="flex items-center space-x-3">
-              <input
-                type="radio"
-                className="form-radio h-5 w-5 text-[#b22222]"
-                name="sort"
-                value={option.value}
-                checked={sortBy === option.value}
-                onChange={() => onSortChange(option.value as SortOption)}
-              />
-              <span className="text-gray-900">{option.label}</span>
-            </label>
-          ))}
-        </div>
-
-        <div className="sticky bottom-0 bg-white p-6 border-t">
-          <Button
-            onClick={onClose}
-            variant="primary"
-            size="lg"
-            className="w-full"
-          >
-            Apply Sort
-          </Button>
+        <div>
+          <p>Date</p>
+          <input type="radio" id="newest" name="date" value="newest" checked={selectedSortBy.sortOptionDate === 'newest'} onChange={handleDateChange} />
+          <label htmlFor="newest">Newest</label>
+          <input type="radio" id="oldest" name="date" value="oldest" checked={selectedSortBy.sortOptionDate === 'oldest'} onChange={handleDateChange} />
+          <label htmlFor="oldest">Oldest</label>
         </div>
       </div>
-    </div>
+      <div className="p-6 border-t">
+        <Button
+          onClick={handleApply}
+          variant="primary"
+          size="lg"
+          className="w-full"
+        >
+          Apply Sort
+        </Button>
+      </div>
+    </Popup>
   );
 };
 
