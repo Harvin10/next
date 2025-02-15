@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Button from '../common/Button/Button';
 
 interface ProductDetailCardProps {
   id: string;
@@ -14,19 +15,14 @@ interface ProductDetailCardProps {
 }
 
 const ProductDetailCard: React.FC<ProductDetailCardProps> = ({ id, image, price, description, location, whatsappLink }) => {
-  const handleWhatsAppClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    window.open(whatsappLink, '_blank');
-  };
-
   return (
-    <Link href={`/products/${id}`} className="block">
-      <div className="max-w-full sm:max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white">
-        <div className="relative w-full aspect-[4/3]">
-          <Image 
-            className="object-cover hover:scale-105 transition-transform duration-300" 
-            src={image} 
-            alt="Property" 
+    <Link href={`/products/${id}`} className="block h-full">
+      <div className="max-w-full sm:max-w-sm h-full rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white flex flex-col">
+        <div className="relative w-full aspect-[4/3] overflow-hidden">
+          <Image
+            className="object-cover transition-transform duration-300 hover:scale-105"
+            src={image}
+            alt="Property"
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 384px"
           />
@@ -34,8 +30,8 @@ const ProductDetailCard: React.FC<ProductDetailCardProps> = ({ id, image, price,
             <span className="font-bold text-gray-800 text-sm sm:text-base">{price}</span>
           </div>
         </div>
-        
-        <div className="px-4 sm:px-6 py-3 sm:py-4">
+
+        <div className="px-4 sm:px-6 py-3 sm:py-4 flex-1">
           <p className="text-gray-800 text-lg font-semibold mb-3 line-clamp-2">{description}</p>
           <div className="flex items-center gap-2 mb-4">
             <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -46,25 +42,30 @@ const ProductDetailCard: React.FC<ProductDetailCardProps> = ({ id, image, price,
           </div>
         </div>
 
-        <div className="px-3 sm:px-4 md:px-6 pb-3 sm:pb-4">
-          <div 
-            onClick={handleWhatsAppClick}
-            className="w-full bg-green-500 text-white font-medium 
-              py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg flex items-center justify-center gap-1.5 sm:gap-2 
-              transition-all duration-300 text-sm sm:text-base cursor-pointer"
+        <div className="px-3 sm:px-4 md:px-6 pb-3 sm:pb-4 mt-auto">
+          <Button
+            onClick={() => {
+              window.open(whatsappLink, '_blank');
+            }}
+            variant="primary"
+            className="w-full"
+            bgColor="#4CAF50"
+            textColor="white"
+            icon={
+              <Image
+                src="/images/whatsapp-icon.png"
+                alt="WhatsApp"
+                width={18}
+                height={18}
+                className="w-[18px] h-[18px] sm:w-5 sm:h-5"
+              />
+            }
           >
-            <Image 
-              src="/images/whatsapp-icon.png" 
-              alt="WhatsApp" 
-              width={18} 
-              height={18} 
-              className="w-[18px] h-[18px] sm:w-5 sm:h-5"
-            />
             <span className="whitespace-nowrap">
               <span className="hidden sm:inline">Contact via </span>
               WhatsApp
             </span>
-          </div>
+          </Button>
         </div>
       </div>
     </Link>

@@ -19,7 +19,7 @@ const useProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const fetchProducts = useCallback(async (searchQuery?: string, sortQuery?: SortOption, filterParams?: { propertyType: string; priceRange: { min: string; max: string } }) => {
+  const fetchProductList = useCallback(async (searchQuery?: string, sortQuery?: SortOption, filterParams?: { propertyType: string; priceRange: { min: string; max: string } }) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
@@ -46,29 +46,29 @@ const useProducts = () => {
   }, [currentSearchQuery, filters, sortBy, currentPage]);
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+    fetchProductList();
+  }, [fetchProductList]);
 
   const handleSearch = useCallback(async (query?: string) => {
     await setCurrentPage(1);
     await setCurrentSearchQuery(query);
-    fetchProducts(query);
-  }, [fetchProducts]);
+    fetchProductList(query);
+  }, [fetchProductList]);
 
   const handleSortApply = (newSortBy: SortOption) => {
     setSortBy(newSortBy);
-    fetchProducts('', newSortBy);
+    fetchProductList('', newSortBy);
   };
 
   const handleFilterApply = (newFilters: { propertyType: string; priceRange: { min: string; max: string } }) => {
     setFilters(newFilters);
-    fetchProducts('', undefined, newFilters);
+    fetchProductList('', undefined, newFilters);
   };
 
   const handlePageChange = useCallback(async (page: number) => {
     await setCurrentPage(page);
-    fetchProducts();
-  }, [fetchProducts]);
+    fetchProductList();
+  }, [fetchProductList]);
 
   return {
     products,

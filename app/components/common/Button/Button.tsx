@@ -9,6 +9,8 @@ interface ButtonProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   icon?: ReactNode;
+  bgColor?: string;
+  textColor?: string;
 }
 
 const Button: FC<ButtonProps> = ({
@@ -18,11 +20,13 @@ const Button: FC<ButtonProps> = ({
   size = 'md',
   className = '',
   icon,
+  bgColor,
+  textColor,
 }) => {
-  const baseStyles = 'rounded-full font-semibold transition-colors duration-300 flex items-center gap-4 shadow-lg hover:shadow-xl';
+  const baseStyles = 'rounded-full font-semibold transition-colors duration-300 flex items-center shadow-lg hover:shadow-xl';
 
   const variants = {
-    primary: 'bg-[#b22222] hover:bg-[#8b1a1a] text-white',
+    primary: `bg-[#b22222] hover:bg-[#8b1a1a] text-white`,
     secondary: 'bg-gray-600 text-white hover:bg-gray-700',
     outline: 'bg-transparent border-2 border-[#b22222] text-[#b22222] hover:bg-[#b22222] hover:text-white',
   };
@@ -33,10 +37,17 @@ const Button: FC<ButtonProps> = ({
     lg: 'px-8 py-4 text-lg',
   };
 
+  const customColorStyles = {
+    backgroundColor: bgColor,
+    color: textColor,
+  };
+
   return (
     <button
       onClick={onClick}
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className} ${icon ? 'justify-between px-3 flex-row gap-2' : 'justify-center'
+        }`}
+      style={customColorStyles}
     >
       {children}
       {icon && icon}
